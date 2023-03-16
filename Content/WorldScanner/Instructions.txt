@@ -1,0 +1,47 @@
+Instructions on how to use the 'WorldScanner' system.
+
+	How does the system work?
+
+This system relies on two things in order to function, a BPI (Blueprint Interface) and an AC (Actor Component).
+The BPI(BPI_ScanInterface) is what gives us the ability to see if an actor is scanable or not. If it is, we call the 'Scan' function within the BPI.
+The AC(AC_ScanComp) is the one responsible of storing the specific details about the object. What that detail is, is completely up to you!.
+
+I currently  have it setup so you have to write in manually what you want to track - i did this mainly because of the amount of customization you're then able to do!
+You wont be locked down to anything, and got (almost)full freedom on what you want to display.
+
+	How to use it?
+
+Long Version
+
+In order to use it, you will need to do a couple(very simple) things.
+
+1: Open up the actor you want to scan's blueprint. Inside there, if you look top left of your monitor, you'll see "Components", click 'Add'.
+In the dropdown that appears, search for 'AC_ScanComp' and add it to the Actor.
+
+2: Select your newly added 'AC_ScanComp' then look on the right side of your monitor, inside the details panel. There you will find a "Scan Info"  array,a 'Metric?' bool, and a 'Tracking Time' float value.
+If you click the '+' sign on the array, you will add a new element. These elements are the texts that you want to show when scanning for this actor. 
+They will all be added one after another into a vertical box, so your first entry will be the top one always.
+Expanding into the array elements, you can see that you have full customization options.
+The float variable 'Tracking Time' is the seconds of which the Scan result fades away and gets destroyed.
+
+3: On the top section of the editor, you should see a Gear symbol with the text "Class Settings" next to it, click that. 
+now on your details panel again(right side), under 'Interfaces', click the 'Add' button, search for 'BPI_ScanInterface', add it.
+
+4: After you've added your BPI, if you look on the left side of your screen, you'll see a 'interfaces' section above Macros, theres your new 'Scan' ability. Open that up.
+
+5: First thing, right click our PlayerRef and promote it to a variable called 'PlayerRef' - then drag out the execution pin and type
+'Spawn Actor From Class' - The class you want to spawn in, is our 'BP_ScanItemsFoundActor'.
+Split open the orange 'Spawn Transform' section to get access to the location.
+Drag in your 'Default Scene Root' from your components list (top left) and out from that 'Get World Location' - Plug that into the spawn transform
+of our spawn actor event.
+And finally, drag out your player ref and your AC_ScanComp, and plug them into our SpawnActor inputs of the same name.
+
+
+And thats it ! Assuming you have a collision of some sort on your actor that our sphere can overlap with, you're good to go!
+
+
+TL;DR
+
+Add 'AC_ScanComp' and 'BPI_ScanInterface' to the actor of your choosing
+Set text you want to display on a scan in 'AC_ScanComp'
+Spawn in 'BP_ScanItemsFoundActor' @ Actors location when our Scan Interface fires
